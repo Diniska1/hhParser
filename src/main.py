@@ -3,24 +3,46 @@ from methods.http import Parse
 
 import asyncio
 
+import json
+
+
+def read_json_config(file_path="config.json"):
+    """Чтение конфигурации из JSON файла"""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+        return config
+    except FileNotFoundError:
+        print(f"Файл {file_path} не найден")
+        exit(1)
+    except json.JSONDecodeError:
+        print(f"Ошибка в формате файла {file_path}")
+        exit(1)
+
 async def main():
     
+    config = read_json_config()
 
-    search = "Ml engineer"
+    search = config.get("search", "")
     search = search.replace(" ", "+")
     search = "&text="+search
 
-    filter_experience = \
-    ""
-    # "&experience=noExperience"
-    # "&experience=between3And6"
-    # "&experience=between1And3"
-    # "&experience=between3And6"
-    # "&experience=moreThan6"
+    filter_experience = config.get("filter_experience", 1)
+    match filter_experience:
+        case 2:
+            filter_experience = "&experience=noExperience"
+        case 3:
+            filter_experience = "&experience=between1And3"
+        case 4:
+            filter_experience = "&experience=between3And6"
+        case 5:
+            filter_experience = "&experience=moreThan6"
+        case _:
+            filter_experience = ""
 
+    start_url = config.get("url", "https://hh.ru/search/vacancy")
 
-    url = 'https://hh.ru/search/vacancy?from=suggest_post&clickedSuggestId=b79c31ab-471f-4a35-95e9-a7fe296deb98&area=1&hhtmFrom=main&hhtmFromLabel=vacancy_search_line' + search + filter_experience
-    # print(url)
+    url = start_url + search + filter_experience
 
     parser = Parse(url)
     db = DataBase()
