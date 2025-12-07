@@ -1,5 +1,8 @@
 {
   "url": "https://hh.ru/search/vacancy?from=suggest_post&clickedSuggestId=b79c31ab-471f-4a35-95e9-a7fe296deb98&area=1&hhtmFrom=main&hhtmFromLabel=vacancy_search_line",
   "search": "Ml engineer",
-  "filter_experience" : 1
+  "filter_experience" : 1,
+
+  "num_vacancies" : 30,
+  "concurrent_requests" : 10 
 }

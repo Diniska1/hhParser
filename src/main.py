@@ -44,17 +44,24 @@ async def main():
 
     url = start_url + search + filter_experience
 
+    num_vacancies = config.get("num_vacancies", 20) 
+    concurrent_requests = config.get("concurrent_requests", 5)
+
     parser = Parse(url)
     db = DataBase()
 
+
+    print(f"Parsing search {search[6:]} with experience filter {filter_experience[12:]} \nand parameters num_vacancies = {num_vacancies}, concurrent_requests = {concurrent_requests} started...")
     try:
-        vacs = await parser.get_all_vacancies(10,4)
+        vacs = await parser.get_all_vacancies(num_vacancies, concurrent_requests)
     except Exception as e:
         print(f"Something went wrong: {e}")
 
     
+    print("Writing vacancies info in file Vacancies.db")
     db.create_table()
     db.write_table(vacs)
+    print("Done.")
 
 asyncio.run(main())
 
