@@ -1,8 +1,9 @@
 from bd.base import DataBase
 from methods.http import Parse
+from stats.base import Graphs
 
 import asyncio
-
+import os 
 import json
 
 
@@ -61,6 +62,18 @@ async def main():
     print("Writing vacancies info in file Vacancies.db")
     db.create_table()
     db.write_table(vacs)
+
+    is_make_graphs = config.get("make_graphs", 0)
+    if is_make_graphs:
+        graph = Graphs()
+         
+        directory = "Graphs"  
+        if not os.path.exists(directory):  
+            os.makedirs(directory)  
+            
+        print("Making graphs...")
+        graph.make_graphs()
+        
     print("Done.")
 
 asyncio.run(main())

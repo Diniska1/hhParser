@@ -4,5 +4,7 @@
   "filter_experience" : 1,
 
   "num_vacancies" : 30,
-  "concurrent_requests" : 10 
+  "concurrent_requests" : 10,
+
+  "make_graphs": 1
 }
